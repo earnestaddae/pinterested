@@ -1,5 +1,7 @@
 class PinsController < ApplicationController
   before_action :set_pin, only: [:show, :edit, :update, :destroy]
+  before_action :authenticate_user!, except: [:index, :show]
+  before_action :correct_user, only: [:edit, :update, :destroy]
 
   # GET /pins
   # GET /pins.json
@@ -14,7 +16,8 @@ class PinsController < ApplicationController
 
   # GET /pins/new
   def new
-    @pin = Pin.new
+    @pin = current_user.pins.build
+    # @pin = Pin.new
   end
 
   # GET /pins/1/edit
@@ -24,7 +27,9 @@ class PinsController < ApplicationController
   # POST /pins
   # POST /pins.json
   def create
-    @pin = Pin.new(pin_params)
+    @pin = current_user.pins.build(pin_params)
+    # @pin = Pin.new(pin_params)
+    # @pin.user = current_user
 
     respond_to do |format|
       if @pin.save
@@ -70,5 +75,14 @@ class PinsController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def pin_params
       params.require(:pin).permit(:description)
+    end
+
+    def correct_user
+      @pin = current_user.pins.find_by(id: params[:id])
+      redirect_to pins_path, notice: "You are not authorized to perform that action on the pin" if @pin.nil?
+      # if @pin.user != current_user
+      #   flash[:notice] = "You are not authorized to perform that action on the pin"
+      #   redirect_to pins_path
+      # end
     end
 end
