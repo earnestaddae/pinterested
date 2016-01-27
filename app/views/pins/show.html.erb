@@ -5,7 +5,7 @@
         <%= image_tag @pin.image.url(:medium) %>
       </div>
       <div class="panel-body">
-        <%= @pin.description %> <br>
+        <%= @pin.description %> <strong><small>Pinned by: <%= @pin.user.name %></small></strong> <br>
         <%= link_to 'Back', pins_path %>
       </div>
       <% if @pin.user == current_user %>
