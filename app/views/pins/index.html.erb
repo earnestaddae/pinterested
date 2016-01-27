@@ -1,7 +1,13 @@
 <div class="jumbotron text-center">
   <h1>Welcome to Pinterested</h1>
   <p>Pin the topics and things that interest you.</p>
-  <p><%= link_to "Sign up now", new_user_registration_path, class: "btn btn-success btn-lg" %> or <%= link_to "Sign up now", new_user_session_path, class: "btn btn-info btn-lg" %> </p>
+  <p>
+  <% if user_signed_in? %>
+    <%= "Welcome #{current_user.name}" if current_user.name %>, <%= link_to "Pin your Interest", new_pin_path, class: "btn btn-primary btn-lg" %>
+  <% else %>
+    <%= link_to "Sign up now", new_user_registration_path, class: "btn btn-success btn-lg" %> or <%= link_to "Sign up now", new_user_session_path, class: "btn btn-info btn-lg" %>
+  <% end %>
+  </p>
 </div>
 <!-- <h2 class="recent-pins">Recent Pins</h2> -->
 <hr>
